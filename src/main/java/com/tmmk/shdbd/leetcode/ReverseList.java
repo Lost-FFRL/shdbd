@@ -9,6 +9,7 @@ package com.tmmk.shdbd.leetcode;
  */
 public class ReverseList {
 
+
     public static void main(String[] args) {
         int i = 1;
         ListNode p = new ListNode(i);
@@ -23,10 +24,27 @@ public class ReverseList {
         }
         print(p);
         System.out.println();
-        print(reverse(p));
+//        print(reverse(p));
         System.out.println();
-        print(movePointer(p));
+        print(test(p));
     }
+
+    public static ListNode test(ListNode head){
+        if(null == head){
+            return null;
+        }
+        ListNode pre = null;
+        ListNode cur = head;
+        ListNode tmp = null;
+        while (null != cur ){
+            tmp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = tmp;
+        }
+        return pre;
+    }
+
 
 
     public static ListNode reverse(ListNode head) {
@@ -58,21 +76,38 @@ public class ReverseList {
         }
     }
 
-    public static ListNode movePointer(ListNode head) {
-        ListNode result = head;
-        while (null != head) {
-            ListNode tmp = head.next;
-            result.next = tmp;
-            tmp = result;
-            head = head.next;
-        }
-        return result;
-    }
 
     public static ListNode recursion(ListNode node) {
         if (null == node || node.next == null) {
             return node;
         }
         return null;
+    }
+
+    /**
+     * 反转链表，简版
+     * 1、指针移动
+     * 2、指针转换
+     * @param node
+     * @return
+     */
+    public static ListNode movePointer(ListNode node) {
+        if (null == node) {
+            return null;
+        }
+        ListNode pre = null;
+        // 指针移动
+        ListNode cur = node;
+        // 替换使用的临时变量：
+        ListNode tmp = null;
+        while (null != cur){
+            // 优先把要替换的值存储在临时变量中
+            tmp = cur.next;
+            cur.next = pre;
+            // 指针移动
+            pre = cur;
+            cur = tmp;
+        }
+        return pre;
     }
 }
