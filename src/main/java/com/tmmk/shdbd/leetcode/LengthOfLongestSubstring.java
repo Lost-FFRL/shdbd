@@ -30,13 +30,23 @@ public class LengthOfLongestSubstring {
 
     public static void main(String[] args) {
 
-        String str = "pwwkew";
-        System.out.println(list(str));
-//        List<String> list = new ArrayList<>();
-//        list.add("p");
-//        list.add("w");
-//        list = list.subList(1,list.lastIndexOf("w"));
-//        System.out.println(list);
+        String str = "aa";
+        System.out.println(set(str));
+    }
+
+    public static int set(String s) {
+        int length = s.length();
+        Set<Character> set = new HashSet<>();
+        int subLen = 0;
+        int start = 0, end = 0;
+        for (int i = 0; i < length; i++) {
+            end++;
+            if (!set.add(s.charAt(i))) {
+                start = end;
+            }
+            subLen = Math.max(subLen, end - start + 1);
+        }
+        return subLen;
     }
 
     public int first(String str) {
@@ -47,13 +57,13 @@ public class LengthOfLongestSubstring {
         for (int i = 0; i < length; i++) {
             tmp = str.substring(i, i + 1);
             if (subStr.contains(tmp)) {
-                subLen = subLen > subStr.length() ? subLen : subStr.length();
+                subLen = Math.max(subLen, subStr.length());
                 subStr = subStr.substring(subStr.lastIndexOf(tmp) + 1) + tmp;
             } else {
                 subStr = subStr + tmp;
             }
         }
-        return subLen > subStr.length() ? subLen : subStr.length();
+        return Math.max(subLen, subStr.length());
     }
 
     public static int list(String str) {
@@ -65,12 +75,13 @@ public class LengthOfLongestSubstring {
             tmp = str.substring(i, i + 1);
             if (list.contains(tmp)) {
                 subLen = subLen > list.size() ? subLen : list.size();
-                list = list.subList(list.lastIndexOf(tmp)+1, list.size());
+                list = list.subList(list.lastIndexOf(tmp) + 1, list.size());
             }
             list.add(tmp);
             System.out.println(list);
         }
         return subLen > list.size() ? subLen : list.size();
     }
+
 
 }
