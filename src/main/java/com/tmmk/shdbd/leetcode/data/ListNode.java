@@ -1,4 +1,4 @@
-package com.tmmk.shdbd.leetcode;
+package com.tmmk.shdbd.leetcode.data;
 
 /**
  * TODO <功能详细描述>
@@ -10,11 +10,11 @@ package com.tmmk.shdbd.leetcode;
  */
 public class ListNode {
 
-    int val;
+    public int val;
 
-    ListNode next;
+    public ListNode next;
 
-    ListNode(int x) {
+    public ListNode(int x) {
         val = x;
     }
 

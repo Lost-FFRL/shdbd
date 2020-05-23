@@ -1,5 +1,7 @@
 package com.tmmk.shdbd.leetcode;
 
+import com.tmmk.shdbd.leetcode.data.ListNode;
+
 /**
  * 反转连表
  *
