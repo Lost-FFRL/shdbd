@@ -53,25 +53,146 @@ public class DefuseTheBomb {
 
     public static void main(String[] args) {
         int[] code = {5, 7, 1, 4};
-        System.out.println(Arrays.toString(decrypt(code, 3)));
+        //         * 输入：code = [5,7,1,4], k = 3
+        //            * 输出：[12,10,16,13]
+        //         * 输入：code = [2,4,9,3], k = -2
+        //            * 输出：[12,5,6,13]
+        // [10,5,7,7,3,2,10,3,6,9,1,6] -4
+        // [22,26,22,28,29,22,19,22,18,21,28,19]
+        //        System.out.println(Arrays.toString(d4(new int[] {5, 7, 1, 4}, 3)));
+        System.out.println(Arrays.toString(d4(new int[] {10, 5, 7, 7, 3, 2, 10, 3, 6, 9, 1, 6}, -4)));
+        System.out.println(Arrays.toString(d4(new int[] {2, 4, 9, 3}, -2)));
+    }
+
+    public static int[] d4(int[] code, int k) {
+        if (k == 0) {
+            Arrays.fill(code, 0);
+            return code;
+        }
+        int length = code.length;
+        int total = 0;
+        int size = k > 0 ? k : k * -1;
+        int[] temp = new int[size];
+        for (int i = 0; i < size; i++) {
+            total += k > 0 ? code[i + 1] : code[length - 1 - size + i];
+            temp[i] = k > 0 ? code[i] : code[length - 1 - i];
+        }
+        for (int i = 0; i < length - 1; i++) {
+            if (k > 0) {
+                code[i] = total;
+                total -= code[i + 1];
+                total += (i + 1 + size < length ? code[i + 1 + size] : temp[i + 1 + size - length]);
+            } else {
+                code[length - 1 - i] = total;
+                total -= (length - 1 - i - 1 >= 0 ? code[length - 1 - i - 1] : temp[(length - 1 - i - 1) * -1]);
+                total += (0 <= length - 1 - i - size - 1 ? code[length - 1 - i - size - 1] :
+                    temp[(length - 1 - i - size) * -1]);
+            }
+        }
+        code[k > 0 ? length - 1 : 0] = total;
+        return code;
+    }
+
+    public static int[] d3(int[] code, int k) {
+        if (k == 0) {
+            for (int i = 0; i < code.length; i++) {
+                code[i] = 0;
+            }
+            return code;
+        }
+        int length = code.length;
+        int[] result = new int[length];
+        int total = 0;
+        int size = k > 0 ? k : k * -1;
+        for (int i = 0; i < size; i++) {
+            total += k > 0 ? code[i + 1] : code[length - size + i];
+        }
+        for (int i = 0; i < length - 1; i++) {
+            result[i] = total;
+            if (k > 0) {
+                total -= code[i + 1];
+                total += code[i + 1 + size < length ? i + 1 + size : i + 1 + size - length];
+            } else {
+                total += code[i];
+                total -= code[i <= size - 1 ? length - size + i : i - size];
+            }
+        }
+        result[length - 1] = total;
+        return result;
+    }
+
+    public static int[] d2(int[] code, int k) {
+        if (k == 0) {
+            for (int i = 0; i < code.length; i++) {
+                code[i] = 0;
+            }
+            return code;
+        }
+        int idx, total = 0, length = code.length;
+        int size = k > 0 ? k : k * -1;
+        int[] tmp = new int[size];
+        if (k > 0) {
+            for (int i = 0; i < size; i++) {
+                total += code[i + 1];
+                tmp[i] = code[i];
+            }
+            for (int i = 0; i < length; i++) {
+                code[i] = total;
+                if (i <= length - 1) {
+                    continue;
+                }
+                total -= code[i + 1];
+                total += i + size < length ? code[i + size] : tmp[i + size - length];
+            }
+        }
+        return code;
     }
 
     public static int[] decrypt(int[] code, int k) {
+        if (k == 0) {
+            for (int i = 0; i < code.length; i++) {
+                code[i] = 0;
+            }
+            return code;
+        }
+        int idx, total = 0, length = code.length;
+        int size = k > 0 ? k : k * -1;
+        int[] tmp = new int[size];
 
-        int idx, total, length = code.length;
-        int[] tmp = new int[k > 0 ? k : k * -1 + length];
-        for (int i = 0; i < tmp.length; i++) {
-            tmp[i] = code[i];
-            total = 0;
-            for (int j = 0; j < k; j++) {
-                if (i + j >= tmp.length) {
-                    total += code[i + j - tmp.length];
-                } else {
-                    total += code[i + j];
+        if (k > 0) {
+            for (int i = 0; i < length; i++) {
+                if (i < k) {
+                    tmp[i] = code[i];
+                }
+                total = 0;
+                for (int j = 1; j <= k; j++) {
+                    if (i + j >= length) {
+                        total += tmp[i + j - length];
+                    } else {
+                        total += code[i + j];
+                    }
+                    code[i] = total;
+                }
+            }
+        } else {
+            idx = 0;
+            for (int i = length - 1; i >= 0; i--) {
+                if (idx < size) {
+                    tmp[idx] = code[i];
+                    idx++;
+                }
+                total = 0;
+                for (int j = 1; j <= size; j++) {
+                    if (i - j < 0) {
+                        total += tmp[-1 * (i - j + 1)];
+                    } else {
+                        total += code[i - j];
+                    }
                 }
                 code[i] = total;
             }
         }
         return code;
     }
+
 }
