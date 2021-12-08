@@ -1,7 +1,6 @@
 package com.tmmk.shdbd.leetcode;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * 你有一个炸弹需要拆除，时间紧迫！你的情报员会给你一个长度为 n 的 循环 数组 code 以及一个密钥 k 。
@@ -60,11 +59,11 @@ public class DefuseTheBomb {
         // [10,5,7,7,3,2,10,3,6,9,1,6] -4
         // [22,26,22,28,29,22,19,22,18,21,28,19]
         //        System.out.println(Arrays.toString(d4(new int[] {5, 7, 1, 4}, 3)));
-        System.out.println(Arrays.toString(d4(new int[] {10, 5, 7, 7, 3, 2, 10, 3, 6, 9, 1, 6}, -4)));
-        System.out.println(Arrays.toString(d4(new int[] {2, 4, 9, 3}, -2)));
+        System.out.println(Arrays.toString(defuseTheBomb(new int[] {10, 5, 7, 7, 3, 2, 10, 3, 6, 9, 1, 6}, -4)));
+        System.out.println(Arrays.toString(defuseTheBomb(new int[] {2, 4, 9, 3}, -2)));
     }
 
-    public static int[] d4(int[] code, int k) {
+    public static int[] defuseTheBomb(int[] code, int k) {
         if (k == 0) {
             Arrays.fill(code, 0);
             return code;
