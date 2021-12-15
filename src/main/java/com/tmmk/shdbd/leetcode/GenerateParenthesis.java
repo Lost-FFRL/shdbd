@@ -12,7 +12,7 @@ import java.util.Set;
 
 /**
  * 同时查看：22. 括号生成
- *
+ * <p>
  * 剑指 Offer II 085. 生成匹配的括号
  * 正整数 n 代表生成括号的对数，请设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
  * 示例 1：
@@ -30,7 +30,6 @@ import java.util.Set;
  * 链接：https://leetcode-cn.com/problems/IDBivT
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  *
- *
  * @author Lost
  * @version 1.0.0
  * @date 2021-12-01 21:44
@@ -46,59 +45,55 @@ public class GenerateParenthesis {
         // ((() ()))
         // ()(( ()))
         // (())( )()
-        //        System.out.println(t.ge3(4));
-        String a = "";
-        for (int i = 0; i < 10; i++) {
-            a = a + i;
-        }
+        System.out.println(t.ge3(1));
+        System.out.println(1 << 2);
+        System.out.println(Integer.parseInt("101010", 2));
     }
 
     public List<String> ge3(int n) {
-        if (n == 1) {
-            return new ArrayList<String>() {{
-                add("()");
-            }};
-        }
-        // (=1,)=0,()=10
+        List<String> result = new ArrayList<>();
+        // 假设：( = 1,) = 0, ()=10
+        // 可推算出组合可能性最大与最小值，最大值：1100，最小值：1010
         String maxStr = "10";
         String minStr = "10";
         for (int i = 0; i < n - 1; i++) {
             maxStr = "1" + maxStr + "0";
             minStr = minStr + "10";
         }
+        // 添加最大值与最小值
+        if (maxStr.equals(minStr)) {
+            // n = 1 的情况
+            result.add(maxStr.replace("1", "(").replace("0", ")"));
+        } else {
+            result.add(maxStr.replace("1", "(").replace("0", ")"));
+            result.add(minStr.replace("1", "(").replace("0", ")"));
+        }
         int max = Integer.parseInt(maxStr, 2);
         int min = Integer.parseInt(minStr, 2);
-        // 1不可能结尾，过滤掉奇数，步长为2，求出所有合法的组合
-        char[] chars;
-        int total;
-        List<String> result = new ArrayList<>();
+
         char[] stack = new char[n + 1];
-        int index;
-        boolean flag;
-        char one = '1';
-        for (int i = min; i <= max; i = i + 2) {
+        // 1不可能结尾，过滤掉奇数，步长为2，求出所有合法的组合
+        for (int i = min + 2; i < max; i = i + 2) {
             // 过滤 1与0的统计值不等于N的
-            chars = Integer.toBinaryString(i).toCharArray();
-            // 首位必然为1，跳过计算
-            total = 1;
-            index = 1;
-            flag = true;
-            stack[0] = one;
-            //  111000
-            //  101010
-            // 100100
+            char[] chars = Integer.toBinaryString(i).toCharArray();
+            // 首位必然为chars[0] = '1'，跳过计算
+            int oneNum = 1;
+            int index = 1;
+            boolean flag = true;
+            stack[0] = chars[0];
+            // 数组循环，示例：['1','1','1','0','0','0']
             for (int j = 1; j < chars.length - 1; j++) {
-                // 总数统计
-                if (one == chars[j]) {
-                    total++;
+                // 总数统计'1' 出现的次数，只能等于N
+                if (chars[0] == chars[j]) {
+                    oneNum++;
                 }
-                if (total > n) {
+                if (oneNum > n) {
                     flag = false;
                     break;
                 }
                 // 10 组合消除，不相等，入栈，相等消除
                 if (index == 0) {
-                    if (one != chars[j]) {
+                    if (chars[0] != chars[j]) {
                         flag = false;
                         break;
                     }
@@ -113,8 +108,8 @@ public class GenerateParenthesis {
                     }
                 }
             }
-            if (flag && total == n) {
-                result.add(String.valueOf(chars).replaceAll("1", "(").replaceAll("0", ")"));
+            if (flag && oneNum == n) {
+                result.add(String.valueOf(chars).replace("1", "(").replace("0", ")"));
             }
         }
         return result;
