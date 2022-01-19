@@ -45,26 +45,23 @@ import com.sun.org.apache.xalan.internal.xsltc.dom.StepIterator;
 public class OrchestraLayout {
 
     public static void main(String[] args) {
-        //        System.out.println(orchestraLayout(5, 0, 0));
-        //        System.out.println(orchestraLayout(5, 0, 1));
-        //        System.out.println(orchestraLayout(5, 0, 2));
 
         System.out.println(orchestraLayout(449572, 209397, 306801));
 
-        //        System.out.println(orchestraLayout(4, 2, 2));
     }
 
     public static int orchestraLayout(long num, long xPos, long yPos) {
-        System.out.println("************");
+//        System.out.println("************");
         // 求 xPos 与 yPos所在圈层的起点坐标。
-        long start = Math.min(Math.min(xPos, num - xPos - 1), Math.min(yPos, num - yPos - 1));
+        long start = Math.min(Math.min(xPos, num - xPos - 1)
+            , Math.min(yPos, num - yPos - 1));
         long length = num - start * 2;
         // 计算出起点坐标的值
         long startVal = (num * num - length * length) % 9 + 1;
-        System.out.println("start= " + start);
-        System.out.println("val= " + startVal);
-        System.out.println("length= " + length);
-        Long result;
+//        System.out.println("start= " + start);
+//        System.out.println("val= " + startVal);
+//        System.out.println("length= " + length);
+        long result;
         // 针对数据所在圈层进行计算，分为四个部分：上下左右
         if (length == 1) {
             result = startVal;
@@ -81,10 +78,6 @@ public class OrchestraLayout {
             // 左-
             result = (startVal + length * 3 - 3 + (length - 1 + start - xPos)) % 9;
         }
-        if (result == 0) {
-            return 9;
-        } else {
-            return result.intValue();
-        }
+        return result == 0  ?  9 : (int)result;
     }
 }
