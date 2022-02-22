@@ -72,9 +72,7 @@ public class FindMedianSortedArrays {
             return odd ? nums1[avg] : (nums1[avg] + nums1[avg - 1] + 0.0) / 2;
         }
         double pre = 0, next = 0;
-        int idx = 0;
-        int idx1 = 0;
-        int idx2 = 0;
+        int idx = 0, idx1 = 0,idx2 = 0;
         avg = avg + 1;
         while (idx < avg) {
             if (idx1 == nums1.length || idx2 == nums2.length) {
