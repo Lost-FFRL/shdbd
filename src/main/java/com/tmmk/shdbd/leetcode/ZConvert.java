@@ -67,24 +67,29 @@ public class ZConvert {
             strArr[i] = new StringBuilder();
         }
         int idx = 0;
-        boolean flag = true;
+        boolean flag = false;
         for (int i = 0; i < s.length(); i++) {
             strArr[idx].append(s.charAt(i));
-            if (flag) {
-                if (idx == numRows - 1) {
-                    flag = false;
-                    idx--;
-                } else {
-                    idx++;
-                }
-            } else {
-                if (idx == 0) {
-                    flag = true;
-                    idx++;
-                } else {
-                    idx--;
-                }
+            // 按官方的简化：
+            if (idx == 0 || idx == numRows - 1) {
+                flag = !flag;
             }
+            idx += flag ? 1 : -1;
+            //            if (flag) {
+            //                if (idx == numRows - 1) {
+            //                    flag = false;
+            //                    idx--;
+            //                } else {
+            //                    idx++;
+            //                }
+            //            } else {
+            //                if (idx == 0) {
+            //                    flag = true;
+            //                    idx++;
+            //                } else {
+            //                    idx--;
+            //                }
+            //            }
         }
         for (StringBuilder t : strArr) {
             result.append(t.toString());
