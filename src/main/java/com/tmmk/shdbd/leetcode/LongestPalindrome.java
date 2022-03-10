@@ -30,22 +30,22 @@ public class LongestPalindrome {
 
     public static void main(String[] args) {
         String p = "babad";
-        System.out.println(solve(p));
+//        System.out.println(solve(p));
         p = "cbbd";
-        System.out.println(solve(p));
-        System.out.println(solve("a"));
-        System.out.println(solve("ab"));
-        System.out.println(solve("bb"));
-        System.out.println(solve("ccc"));
-        System.out.println(solve("aaaaa"));
-        System.out.println(solve("ababababa"));
-        System.out.println(solve("oyxshtfvhudhhsnstwfxhdlhieqwaujxubhymmmuhpzjmjrwlapdlrnmzxprwkykmhcjozlivieafymrnixadlyomwvmoextitacntoopnldbhhzqsxkatwjmyzrvkhrwltapztwverlrnbownqhhdmuzwzynfdzdzgcjjxbwmziemkxhgsppdwureforlajyhucagmnxngmcxtzwrevgzdwzpbuxgkzdablbgzmjhnuvdaeonsotcwmazcpziuwjzgweygfvlqajzgujxsskaaduicsjyevqiwivrfvntmmbadqawskzrszhekrbdgdmfvszsypxhsaqeenogzegehuxifpkusuukrddouzshamsjukhagruhmwvrrrrvwmhurgahkujsmahszuoddrkuusukpfixuhegezgoneeqashxpyszsvfmdgdbrkehzsrzkswaqdabmmtnvfrviwiqveyjsciudaakssxjugzjaqlvfgyewgzjwuizpczamwctosnoeadvunhjmzgblbadzkgxubpzwdzgverwztxcmgnxnmgacuhyjalroferuwdppsghxkmeizmwbxjjcgzdzdfnyzwzumdhhqnwobnrlrevwtzpatlwrhkvrzymjwtakxsqzhhbdlnpootncatitxeomvwmoyldaxinrmyfaeivilzojchmkykwrpxzmnrldpalwrjmjzphummmyhbuxjuawqeihldhxfwtsnshhduhvfthsxyo"));
+//        System.out.println(solve1(p));
+//        System.out.println(solve1("a"));
+//        System.out.println(solve1("ab"));
+//        System.out.println(solve1("bb"));
+//        System.out.println(solve1("ccc"));
+//        System.out.println(solve1("aaabaaaa"));
+        System.out.println(isPalindrome("tattarbrattat"));
+//        System.out.println(solve1("oyxshtfvhudhhsnstwfxhdlhieqwaujxubhymmmuhpzjmjrwlapdlrnmzxprwkykmhcjozlivieafymrnixadlyomwvmoextitacntoopnldbhhzqsxkatwjmyzrvkhrwltapztwverlrnbownqhhdmuzwzynfdzdzgcjjxbwmziemkxhgsppdwureforlajyhucagmnxngmcxtzwrevgzdwzpbuxgkzdablbgzmjhnuvdaeonsotcwmazcpziuwjzgweygfvlqajzgujxsskaaduicsjyevqiwivrfvntmmbadqawskzrszhekrbdgdmfvszsypxhsaqeenogzegehuxifpkusuukrddouzshamsjukhagruhmwvrrrrvwmhurgahkujsmahszuoddrkuusukpfixuhegezgoneeqashxpyszsvfmdgdbrkehzsrzkswaqdabmmtnvfrviwiqveyjsciudaakssxjugzjaqlvfgyewgzjwuizpczamwctosnoeadvunhjmzgblbadzkgxubpzwdzgverwztxcmgnxnmgacuhyjalroferuwdppsghxkmeizmwbxjjcgzdzdfnyzwzumdhhqnwobnrlrevwtzpatlwrhkvrzymjwtakxsqzhhbdlnpootncatitxeomvwmoyldaxinrmyfaeivilzojchmkykwrpxzmnrldpalwrjmjzphummmyhbuxjuawqeihldhxfwtsnshhduhvfthsxyo"));
     }
 
     public static String solve(String s) {
         int length = s.length();
         String palindrome = s.substring(0, 1);
-        int fromIdx, idx,last;
+        int fromIdx, idx, last;
         for (int i = 0; i < length - 1; i++) {
             char item = s.charAt(i);
             fromIdx = i + 1;
@@ -69,15 +69,49 @@ public class LongestPalindrome {
         return palindrome;
     }
 
+    public static String solve1(String s) {
+        int length = s.length();
+        String palindrome = s.substring(0, 1);
+        int last, endIdx;
+        String sub = "";
+        for (int i = 0; i < length - 1; i++) {
+            char item = s.charAt(i);
+            endIdx = length;
+            while (true) {
+                // abcdaba
+                // 从字符串尾部开始匹配，优先匹配最大长度，匹配终止循环
+                sub = s.substring(i, endIdx);
+                last = sub.lastIndexOf(item);
+                if (last <= 0 || sub.length() < palindrome.length()) {
+                    break;
+                }
+                String pal = s.substring(i, i + last + 1);
+                if (isPalindrome(pal)) {
+                    // 剩余长度没有已匹配的长，可结束方法
+                    palindrome = pal.length() > palindrome.length() ? pal : palindrome;
+                    if (s.length() - i < palindrome.length()) {
+                        return palindrome;
+                    }
+                    break;
+                }
+                endIdx = i + last;
+            }
+
+        }
+        return palindrome;
+    }
+
+    // "tat tar rat tat"
     public static boolean isPalindrome(String p) {
         int size = p.length() / 2;
+        int mod = p.length() % 2 + size;
         for (int i = 0; i < size; i++) {
-            if (p.charAt(i) != p.charAt(p.length() - 1 - i)) {
+            if (p.charAt(i) != p.charAt(p.length() - 1 - i)
+                    || p.charAt(size - 1 - i) != p.charAt(mod + i)) {
                 return false;
             }
         }
         return true;
     }
-
 
 }
